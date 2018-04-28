@@ -7,6 +7,7 @@ TagManager:
   - Ink
   - DIrt
   - PastePhysics
+  - Level
   layers:
   - Default
   - TransparentFX

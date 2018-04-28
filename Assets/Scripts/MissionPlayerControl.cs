@@ -3,7 +3,8 @@
 [RequireComponent(typeof(Rigidbody))]
 public class MissionPlayerControl : MonoBehaviour {
     public static bool ControlsEnabled = true;
-    const int LEVEL_LAYER = 8;
+    public static bool BrushModeEnabled = false;
+
     Vector3 _lastPointer;
     Vector3 _curPointer;
     Vector3 _target;
@@ -12,41 +13,45 @@ public class MissionPlayerControl : MonoBehaviour {
     public Vector3 WorldPointerDir;
     public float Force = 5.0f;
     public float TargetJitter = 0.5f;
-    int _levelMask = 0+(1 << LEVEL_LAYER);
+    int _levelMask;
     Rigidbody _rb;
-
-    bool _brushModeEnabled = false;
-
+    
     // Use this for initialization
     void Awake() {
         _rb = GetComponent<Rigidbody>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (ControlsEnabled)
+        _levelMask = LayerMask.GetMask("Level", "UI");
+        Debug.Log(System.Convert.ToString(_levelMask, 2));
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (UpdatePointer())
         {
-            if(UpdatePointer())
-                _target = WorldPointer;
+            _target = WorldPointer;
+            if (BrushModeEnabled)
+            {
+
+            }
         }
-        if ((_target - transform.position).magnitude > 0.1f)
+        if (ControlsEnabled && (_target - transform.position).magnitude > 0.1f)
         {
-            _targetDir = _target - transform.position + (Vector3)Random.insideUnitCircle*TargetJitter;
-            if(_rb.velocity.magnitude < _targetDir.magnitude)
-            _rb.AddForce(_targetDir.normalized * _rb.drag * Force);
+            _targetDir = _target - transform.position + (Vector3)Random.insideUnitCircle * TargetJitter;
+            if (_rb.velocity.magnitude < _targetDir.magnitude)
+                _rb.AddForce(_targetDir.normalized * _rb.drag * Force);
         }
     }
 
-    void SwitchBrushMode()
+    public static void SwitchBrushMode()
     {
-        if (_brushModeEnabled)
+        if (BrushModeEnabled)
         {
             ControlsEnabled = true;
-            _brushModeEnabled = false;
+            BrushModeEnabled = false;
         } else
         {
             ControlsEnabled = false;
-            _brushModeEnabled = true;
+            BrushModeEnabled = true;
         }
     }
 
@@ -63,8 +68,14 @@ public class MissionPlayerControl : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.ScreenPointToRay(pointerPos), out hit, int.MaxValue, _levelMask))
             {
-                WorldPointer = hit.point;
-                WorldPointer.z = transform.position.z;
+                BaseButton btn = hit.collider.GetComponentInParent<BaseButton>();
+                if (btn != null) btn.OnButtonDown();
+
+                if (hit.collider.tag == "Level")
+                {
+                    WorldPointer = hit.point;
+                    WorldPointer.z = transform.position.z;
+                }
             } else
             {
                 //WorldPointer = transform.position + (Camera.main.ScreenToViewportPoint(pointerPos) * 2) - Vector3.up - Vector3.right;
