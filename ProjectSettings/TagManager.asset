@@ -9,6 +9,7 @@ TagManager:
   - PastePhysics
   - Level
   - Brush
+  - Position
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - 
   - 
   - Level
-  - 
+  - Node
   - 
   - 
   - 

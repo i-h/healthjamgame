@@ -6,5 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/world_map.unity
+    guid: 23f4f83472ba3e347a2512c240137567
+  - enabled: 1
     path: Assets/Scenes/tooth_mission.unity
     guid: 76ee22f1234925641bdee889eec4d02d
