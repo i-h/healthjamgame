@@ -8,7 +8,6 @@ public class BrushModeButton : BaseButton {
     {
         if (pushed) return;
         pushed = true;
-        Debug.Log("Clicked!");
         MissionPlayerControl.SwitchBrushMode();
         StartCoroutine(Flip());
     }
@@ -19,7 +18,7 @@ public class BrushModeButton : BaseButton {
         if (j != null) j.enabled = false;
         float t = 0;
         Vector3 start = transform.rotation.eulerAngles;
-        Vector3 end = start + Vector3.right * 180;
+        Vector3 end = start + Vector3.up * 180;
         while(t < 1)
         {
             transform.eulerAngles = Vector3.Slerp(start, end, t);

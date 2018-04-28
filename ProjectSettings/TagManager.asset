@@ -8,6 +8,7 @@ TagManager:
   - DIrt
   - PastePhysics
   - Level
+  - Brush
   layers:
   - Default
   - TransparentFX

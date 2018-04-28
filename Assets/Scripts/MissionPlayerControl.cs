@@ -5,6 +5,8 @@ public class MissionPlayerControl : MonoBehaviour {
     public static bool ControlsEnabled = true;
     public static bool BrushModeEnabled = false;
 
+    public Transform ToothBrush;
+
     Vector3 _lastPointer;
     Vector3 _curPointer;
     Vector3 _target;
@@ -20,26 +22,31 @@ public class MissionPlayerControl : MonoBehaviour {
     void Awake() {
         _rb = GetComponent<Rigidbody>();
         _levelMask = LayerMask.GetMask("Level", "UI");
-        Debug.Log(System.Convert.ToString(_levelMask, 2));
     }
 
     // Update is called once per frame
     void Update()
     {
+        ToothBrush.gameObject.SetActive(BrushModeEnabled);
+        
         if (UpdatePointer())
         {
-            _target = WorldPointer;
-            if (BrushModeEnabled)
-            {
-
-            }
+            if (ControlsEnabled) _target = WorldPointer;
+            if (BrushModeEnabled) BrushMode();            
         }
-        if (ControlsEnabled && (_target - transform.position).magnitude > 0.1f)
+        if ((_target - transform.position).magnitude > 0.1f)
         {
             _targetDir = _target - transform.position + (Vector3)Random.insideUnitCircle * TargetJitter;
             if (_rb.velocity.magnitude < _targetDir.magnitude)
                 _rb.AddForce(_targetDir.normalized * _rb.drag * Force);
         }
+    }
+
+    void BrushMode()
+    {
+        if (ToothBrush == null) return;
+        if (!ToothBrush.gameObject.activeInHierarchy) ToothBrush.gameObject.SetActive(true);
+        ToothBrush.position = WorldPointer;
     }
 
     public static void SwitchBrushMode()
@@ -62,14 +69,17 @@ public class MissionPlayerControl : MonoBehaviour {
         pointerPos = Input.mousePosition;
         if (Input.touchCount > 0)
             pointerPos = Input.GetTouch(0).position;
-
+        
         if (Input.GetMouseButton(0) || Input.touchCount > 0)
         {
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.ScreenPointToRay(pointerPos), out hit, int.MaxValue, _levelMask))
             {
-                BaseButton btn = hit.collider.GetComponentInParent<BaseButton>();
-                if (btn != null) btn.OnButtonDown();
+                if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+                {
+                    BaseButton btn = hit.collider.GetComponentInParent<BaseButton>();
+                    if (btn != null) btn.OnButtonDown();
+                }
 
                 if (hit.collider.tag == "Level")
                 {

@@ -15,12 +15,9 @@ public class RotationJitter : MonoBehaviour {
     private void Start()
     {
         Randomize();
-    }
-
-    private void Awake()
-    {
         _offset = transform.rotation.eulerAngles;
     }
+    
 
     void Update () {
         _lastPhase = _phase;
@@ -33,7 +30,7 @@ public class RotationJitter : MonoBehaviour {
             //Randomize();
         }
         
-        transform.localRotation = Quaternion.Euler(_offset + Jitter * _phase);
+        transform.rotation = Quaternion.Euler(_offset + Jitter * _phase);
 	}
 
     void Randomize()
