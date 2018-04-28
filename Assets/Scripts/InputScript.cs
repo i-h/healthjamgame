@@ -34,7 +34,7 @@ public class InputScript : MonoBehaviour {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        Vector3 fwd = transform.TransformDirection( Vector3.forward );
+        //Vector3 fwd = transform.TransformDirection( Vector3.forward );
 
         if(Physics.Raycast(ray, out hit,1000f))
         {

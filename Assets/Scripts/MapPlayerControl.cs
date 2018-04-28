@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MapPlayerControl : MonoBehaviour {
+    public static bool Disabled = false;
     private ToothNode _currentNode;
     private List<ToothNode> _path;
     public ToothNode StartNode;
     Vector3 _pointerPos;
+    bool _movable = true;
 
     private void Start()
     {
@@ -19,6 +21,7 @@ public class MapPlayerControl : MonoBehaviour {
 
     private void Update()
     {
+        if (MainMenuControl.Displayed) return;
         _pointerPos = Input.mousePosition;
         if (Input.touchCount > 0)
             _pointerPos = Input.GetTouch(0).position;
@@ -28,7 +31,7 @@ public class MapPlayerControl : MonoBehaviour {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(_pointerPos), out hit, int.MaxValue, LayerMask.GetMask("Node")))
             {
                 ToothNode n = hit.collider.GetComponent<ToothNode>();
-                if (n != null)
+                if (n != null && _movable)
                 {
                     if (_currentNode == n)
                     {
@@ -58,13 +61,15 @@ public class MapPlayerControl : MonoBehaviour {
 
     IEnumerator MoveBetween(Vector3 oldNode, Vector3 newNode)
     {
+        _movable = false;
         float t = 0;
         while(t < 1)
         {
             transform.position = Vector3.Lerp(oldNode, newNode, t);
             t += 0.01f;
+            yield return new WaitForEndOfFrame();
         }
         transform.position = newNode;
-        yield return new WaitForEndOfFrame();
+        _movable = true;
     }
 }

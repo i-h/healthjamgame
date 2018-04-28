@@ -21,8 +21,4 @@ public class Toothbrush : MonoBehaviour {
         _currPos = transform.position;
         BrushForce = (_prevPos - _currPos).magnitude;
 	}
-    private void OnGUI()
-    {
-        GUILayout.Label(BrushForce + "");
-    }
 }

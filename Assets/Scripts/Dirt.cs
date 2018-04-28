@@ -23,7 +23,6 @@ public class Dirt : MonoBehaviour {
     }
     public void ReduceHealth(float amount)
     {
-        Debug.Log(_health);
         _health -= amount;
         if(_health <= 0)
         {

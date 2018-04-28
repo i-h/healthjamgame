@@ -27,6 +27,7 @@ public class MissionPlayerControl : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if (MainMenuControl.Displayed) return;
         ToothBrush.gameObject.SetActive(BrushModeEnabled);
         
         if (UpdatePointer())
