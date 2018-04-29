@@ -4,10 +4,33 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MainMenuControl : MonoBehaviour {
+    public bool DisplayOnStart = false;
+    public static bool FirstStart = true;
     public static bool Displayed = false;
     public Image Background;
     public Transform MainMenuRoot;
     public Transform SettingsRoot;
+    public Transform IntroPlayer;
+    public Transform IntroBrush;
+
+    public void Awake()
+    {
+        if (DisplayOnStart && FirstStart)
+        {
+            MainMenuRoot.gameObject.SetActive(true);
+            SettingsRoot.gameObject.SetActive(false);
+            Background.gameObject.SetActive(true);
+            Displayed = true;
+        }
+        else
+        {
+            MainMenuRoot.gameObject.SetActive(false);
+            SettingsRoot.gameObject.SetActive(false);
+            Background.gameObject.SetActive(false);
+        }
+        FirstStart = false;
+
+    }
 
     public void FadeInMenu(bool fast)
     {
@@ -39,17 +62,27 @@ public class MainMenuControl : MonoBehaviour {
         SettingsRoot.gameObject.SetActive(false);
     }
     
+    public void StartIntroSequence()
+    {
+
+    }
+    IEnumerator IntroSequence()
+    {
+        yield return new WaitForSeconds(1);
+        
+    }
     public void QuitGame()
     {
         Application.Quit();
     }
-
-	void Start () {
-        if (!Displayed) FadeInMenu(true);
-	}
 	
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.Escape)) FadeInMenu(false);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log(Displayed);
+            if (!Displayed) FadeInMenu(false);
+            else FadeOutMenu();
+        }
 	}
 
     IEnumerator FadeBackground(float start, float end, float step)

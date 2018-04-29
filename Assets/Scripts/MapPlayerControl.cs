@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MapPlayerControl : MonoBehaviour {
     public static bool Disabled = false;
-    private ToothNode _currentNode;
+    public static ToothNode CurrentNode;
+    public static string CurrentNodeName;
     private List<ToothNode> _path;
     public ToothNode StartNode;
     Vector3 _pointerPos;
@@ -13,9 +14,15 @@ public class MapPlayerControl : MonoBehaviour {
 
     private void Start()
     {
-        if(StartNode != null)
+        Debug.Log(CurrentNode);
+        GameObject g = GameObject.Find(CurrentNodeName);
+        if (g != null) CurrentNode = g.GetComponent<ToothNode>();
+        if (StartNode != null && CurrentNode == null)
         {
             SetNode(StartNode);
+        } else if (CurrentNode != null)
+        {
+            SetNode(CurrentNode);
         }
     }
 
@@ -33,7 +40,7 @@ public class MapPlayerControl : MonoBehaviour {
                 ToothNode n = hit.collider.GetComponent<ToothNode>();
                 if (n != null && _movable)
                 {
-                    if (_currentNode == n)
+                    if (CurrentNode == n)
                     {
                         SceneManager.LoadScene("tooth_mission");
                     }
@@ -48,15 +55,16 @@ public class MapPlayerControl : MonoBehaviour {
 
     public void SetNode(ToothNode newCurrent)
     {
-        if (_currentNode == null)
+        CurrentNodeName = newCurrent.name;
+        if (CurrentNode == null)
         {
             StartCoroutine(MoveBetween(transform.position, newCurrent.GetPlayerPosition()));
         }
         else
         {
-            StartCoroutine(MoveBetween(_currentNode.GetPlayerPosition(), newCurrent.GetPlayerPosition()));
+            StartCoroutine(MoveBetween(CurrentNode.GetPlayerPosition(), newCurrent.GetPlayerPosition()));
         }
-        _currentNode = newCurrent;
+        CurrentNode = newCurrent;
     }
 
     IEnumerator MoveBetween(Vector3 oldNode, Vector3 newNode)

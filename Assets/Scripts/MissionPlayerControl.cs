@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 public class MissionPlayerControl : MonoBehaviour {
@@ -18,10 +20,30 @@ public class MissionPlayerControl : MonoBehaviour {
     int _levelMask;
     Rigidbody _rb;
     
-    // Use this for initialization
+    public void Win()
+    {
+        StartCoroutine(WinCoroutine());
+    }
+    IEnumerator WinCoroutine()
+    {
+        float t = 0;
+        while (t < 1)
+        {
+            AudioManager.MusicSource.pitch = 1 - t;
+            t += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return new WaitForSeconds(2);
+        
+        SceneManager.LoadScene("world_map");
+
+    }
+    
     void Awake() {
         _rb = GetComponent<Rigidbody>();
         _levelMask = LayerMask.GetMask("Level", "UI");
+        SwitchBrushMode(false);
     }
 
     // Update is called once per frame
@@ -49,18 +71,14 @@ public class MissionPlayerControl : MonoBehaviour {
         if (!ToothBrush.gameObject.activeInHierarchy) ToothBrush.gameObject.SetActive(true);
         ToothBrush.position = WorldPointer;
     }
-
     public static void SwitchBrushMode()
     {
-        if (BrushModeEnabled)
-        {
-            ControlsEnabled = true;
-            BrushModeEnabled = false;
-        } else
-        {
-            ControlsEnabled = false;
-            BrushModeEnabled = true;
-        }
+        SwitchBrushMode(!BrushModeEnabled);
+    }
+    public static void SwitchBrushMode(bool on)
+    {
+            ControlsEnabled = !on;
+            BrushModeEnabled = on;
     }
 
     bool UpdatePointer()
