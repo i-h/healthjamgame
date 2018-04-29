@@ -619,6 +619,7 @@ MonoBehaviour:
   SettingsRoot: {fileID: 224446131681668386}
   IntroPlayer: {fileID: 0}
   IntroBrush: {fileID: 0}
+  StartSound: {fileID: 8300000, guid: 1b1dc604cf93738448c6b2d67ea46581, type: 3}
 --- !u!114 &114626800752374838
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -686,7 +687,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114527822138472570}
-        m_MethodName: FadeOutMenu
+        m_MethodName: StartIntroSequence
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

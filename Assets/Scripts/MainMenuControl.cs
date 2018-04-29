@@ -12,6 +12,7 @@ public class MainMenuControl : MonoBehaviour {
     public Transform SettingsRoot;
     public Transform IntroPlayer;
     public Transform IntroBrush;
+    public AudioClip StartSound;
 
     public void Awake()
     {
@@ -64,7 +65,8 @@ public class MainMenuControl : MonoBehaviour {
     
     public void StartIntroSequence()
     {
-
+        AudioManager.PlaySound(StartSound);
+        FadeOutMenu();
     }
     IEnumerator IntroSequence()
     {

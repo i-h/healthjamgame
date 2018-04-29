@@ -26,7 +26,7 @@ public class AudioManager : MonoBehaviour {
     }
     public static void PlaySound(AudioClip sound, float volume)
     {
-        if (Source == null || MainMenuControl.Displayed) return;
+        if (Source == null) return;
         Source.PlayOneShot(sound, volume);
         Debug.Log("Playing " + sound.name);
     }

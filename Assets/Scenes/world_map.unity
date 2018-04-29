@@ -1941,15 +1941,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114011367376753016, guid: 4924b06db4f505b40b8b1f4e10d5f845,
-        type: 2}
-      propertyPath: m_Text
-      value: "Design, programming, 2D \"art\", sound\n<color=#D469ABFF>Teemu Kokkonen</color>\nAdditional
-        programming, additional design\n<color=#D469ABFF>Olli-Matti Rautiainen</color>\nModeling
-        (Tooth, main character, rocks)\n<color=#D469ABFF>Oiva Kyt\xF6m\xE4ki</color>\nAdditional
-        models (Toothbrush)\n<color=#D469ABFF>Arttu Savolainen</color>\nMusic\n<color=#D469ABFF>DJ
-        Laeskibasso</color>"
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4924b06db4f505b40b8b1f4e10d5f845, type: 2}
   m_IsPrefabParent: 0
